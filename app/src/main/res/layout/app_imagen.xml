@@ -1,0 +1,26 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:background="@color/colorFondoApp"
+    android:layout_height="fill_parent">
+
+    <com.flaviofaria.kenburnsview.KenBurnsView
+        android:id="@+id/displayImagen"
+        android:scaleType="center"
+        android:layout_width="match_parent"
+        android:layout_height="280dp" />
+
+    <ProgressBar
+        style="?android:attr/progressBarStyleLarge"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/progressBar2"
+        android:visibility="gone"
+        android:layout_gravity="center" />
+
+    <ImageView
+        android:id="@+id/inside_imageview"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal|bottom" />
+
+</FrameLayout>
