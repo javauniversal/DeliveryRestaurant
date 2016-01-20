@@ -142,8 +142,9 @@ public class ActMenu extends AppCompatActivity {
     private boolean parseJSON(String json) {
         boolean indicant = false;
         Gson gson = new Gson();
-        if (!json.equals("[]")){
+        if (!json.equals("[]") || json != null){
             try {
+
                 final Producto listProduct = gson.fromJson(json, Producto.class);
                 setProductoStatic(listProduct);
 
