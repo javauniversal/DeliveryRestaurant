@@ -1,0 +1,19 @@
+<resources>
+
+    <!-- Esta dimencion es para celulares con pantalla de
+
+        * 480 x 854 pixels, 4.5 pulgadas.
+        * 480 x 800,540x960 and nearer resolution.
+        * 4.0” 480x800 hdpi
+        * 3.7” 480x854 hdpi
+
+    -->
+
+    <dimen name="ancho_tabla">113dp</dimen>
+    <dimen name="ancho_table_precio">60dp</dimen>
+
+    <dimen name="size_menu_text">7dp</dimen>
+
+
+
+</resources>

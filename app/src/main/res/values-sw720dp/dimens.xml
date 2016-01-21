@@ -1,0 +1,15 @@
+<resources>
+
+    <!-- Esta dimencion es para celulares con pantalla de
+
+        * 10.1” tablet 1280x800 mdpi
+        * 800 x 1280
+
+
+    -->
+
+
+    <dimen name="ancho_tabla">10dp</dimen>
+    <dimen name="ancho_table_precio">10dp</dimen>
+
+</resources>

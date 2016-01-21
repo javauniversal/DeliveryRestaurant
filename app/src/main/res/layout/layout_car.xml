@@ -18,7 +18,6 @@
     <LinearLayout
         android:orientation="horizontal"
         android:layout_width="match_parent"
-        android:elevation="17dp"
         android:layout_height="85dp"
         android:padding="9dp"
         android:background="@color/colorPrimary"
@@ -32,7 +31,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="Realizar pedido"
+            android:text="@string/realizar_pedido3"
             android:visibility="gone"
             android:id="@+id/pedirServices" />
 
@@ -46,15 +45,7 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Domicilio: $2500"
-                android:layout_marginLeft="12dp"
-                android:id="@+id/domicilioAdd"
-                android:textColor="#fff" />
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Total: "
+                android:text="@string/total"
                 android:layout_marginLeft="12dp"
                 android:id="@+id/totaltexto"
                 android:textColor="#fff" />

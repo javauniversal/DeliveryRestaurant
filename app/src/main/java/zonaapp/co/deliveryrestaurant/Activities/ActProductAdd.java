@@ -1,5 +1,6 @@
 package zonaapp.co.deliveryrestaurant.Activities;
 
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -23,10 +24,15 @@ import com.nostra13.universalimageloader.core.assist.FailReason;
 import com.nostra13.universalimageloader.core.assist.ImageLoadingListener;
 
 import java.text.DecimalFormat;
+import java.util.ArrayList;
+import java.util.List;
 
 import zonaapp.co.deliveryrestaurant.DataBase.DBHelper;
+import zonaapp.co.deliveryrestaurant.Entities.AddProductCar;
+import zonaapp.co.deliveryrestaurant.Entities.Adiciones;
 import zonaapp.co.deliveryrestaurant.R;
 
+import static zonaapp.co.deliveryrestaurant.Entities.Login.getSedeStatic;
 import static zonaapp.co.deliveryrestaurant.Entities.Producto.getProductoStatic;
 
 public class ActProductAdd extends AppCompatActivity implements View.OnClickListener{
@@ -170,13 +176,12 @@ public class ActProductAdd extends AppCompatActivity implements View.OnClickList
                                 @Override
                                 public void onPositive(MaterialDialog dialog) {
                                     //Realizar pedido
-                                    /*if (GuardarPedido()) {
-                                        Bundle bundle = new Bundle();
-                                        bundle.putInt("compania", getSedeStatic().getIdsedes());
-                                        startActivity(new Intent(ActProductAdd.this, ActCar.class).putExtras(bundle));
+                                    if (GuardarPedido()) {
+
+                                        startActivity(new Intent(ActProductAdd.this, ActCar.class));
                                         overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
                                         finish();
-                                    }*/
+                                    }
                                 }
                                 @Override
                                 public void onNegative(MaterialDialog dialog) {
@@ -194,7 +199,7 @@ public class ActProductAdd extends AppCompatActivity implements View.OnClickList
 
     private boolean GuardarPedido(){
 
-        /*AddProductCar car = new AddProductCar();
+        AddProductCar car = new AddProductCar();
 
         car.setCodeProcut(getProductoStatic().getIdproductos());
         car.setNameProduct(getProductoStatic().getDescripcion());
@@ -207,7 +212,7 @@ public class ActProductAdd extends AppCompatActivity implements View.OnClickList
         car.setComment(myComment.getText().toString());
         car.setUrlimagen(getProductoStatic().getFoto());
         car.setIdsede(getSedeStatic().getIdsedes());
-        car.setIdcompany(getSedeStatic().getIdempresa());
+        car.setIdcompany(getSedeStatic().getIdempleado());
         car.setNameSede(getSedeStatic().getDescripcion());
 
         if(getProductoStatic().getAdicionesList() != null && getProductoStatic().getAdicionesList().size() > 0){
@@ -228,7 +233,7 @@ public class ActProductAdd extends AppCompatActivity implements View.OnClickList
                                                 getProductoStatic().getAdicionesList().get(f).getValor(),
                                                 getProductoStatic().getAdicionesList().get(f).getEstado(),
                                                 getProductoStatic().getAdicionesList().get(f).getIdproductos(),
-                                                getSedeStatic().getIdsedes(),getEmpresastatic().getIdempresa()));
+                                                getSedeStatic().getIdsedes(),getSedeStatic().getIdempleado()));
                                 break;
                             }
                         }
@@ -246,9 +251,7 @@ public class ActProductAdd extends AppCompatActivity implements View.OnClickList
             //Problemas
             Toast.makeText(ActProductAdd.this, "Problemas al guardar en el carrito.", Toast.LENGTH_SHORT).show();
             return false;
-        }*/
-
-        return true;
+        }
 
     }
 

@@ -45,4 +45,7 @@ dependencies {
     compile 'me.himanshusoni.quantityview:quantity-view:1.0.0'
     compile 'com.afollestad:material-dialogs:0.7.6.0'
     compile 'com.github.d-max:spots-dialog:0.3@aar'
+    compile 'de.hdodenhof:circleimageview:2.0.0'
+    compile files('libs/gcm.jar')
+    compile 'com.google.android.gms:play-services-appindexing:8.1.0'
 }

@@ -1,10 +1,13 @@
 package zonaapp.co.deliveryrestaurant.Activities;
 
 import android.app.AlertDialog;
+import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
@@ -20,6 +23,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.google.android.gcm.GCMRegistrar;
 import com.google.gson.Gson;
 
 import java.util.HashMap;
@@ -30,6 +34,7 @@ import zonaapp.co.deliveryrestaurant.Adapters.AppAdapter;
 import zonaapp.co.deliveryrestaurant.Entities.Login;
 import zonaapp.co.deliveryrestaurant.R;
 
+import static zonaapp.co.deliveryrestaurant.Entities.Login.getLoginStatic;
 import static zonaapp.co.deliveryrestaurant.Entities.Login.setLoginStatic;
 
 public class ActMain extends AppCompatActivity {
@@ -44,18 +49,20 @@ public class ActMain extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        if (getLoginStatic() != null) {
+            startActivity(new Intent(getApplicationContext(), ActMenu.class));
+            overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
+            finish();
+        }
+
         setContentView(R.layout.layout_main);
 
         coordinatorLayout = (CoordinatorLayout) findViewById(R.id.coordinatorLayout);
-
         alertDialog = new SpotsDialog(this, R.style.Custom);
-
         editUsuario = (EditText) findViewById(R.id.editUsuario);
-
         editPassword = (EditText) findViewById(R.id.editPassword);
-
         btnIngresar = (Button) findViewById(R.id.btnIngresar);
-
         btnIngresar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -124,6 +131,10 @@ public class ActMain extends AppCompatActivity {
                 final Login login = gson.fromJson(json, Login.class);
                 setLoginStatic(login);
 
+                //Metodo de Registro imei
+
+                registerUser(this);
+
                 LayoutInflater inflater = getLayoutInflater();
                 View dialoglayout = inflater.inflate(R.layout.sedes_dialog, null);
                 ListView listview = (ListView) dialoglayout.findViewById(R.id.list_item);
@@ -147,6 +158,19 @@ public class ActMain extends AppCompatActivity {
             alertDialog.dismiss();
         }
         return indicant;
+    }
+
+    private void registerUser(Context context){
+        GCMRegistrar.checkDevice(this);
+        GCMRegistrar.checkManifest(this);
+        final String regId = GCMRegistrar.getRegistrationId(context);
+        if (regId.equals("")) {
+            GCMRegistrar.register(context, "918001884534");
+            GCMRegistrar.setRegisteredOnServer(this, true);
+            Log.v("GCM", "Registrado");
+        } else {
+            Log.v("GCM", "Ya registrado");
+        }
     }
 
 

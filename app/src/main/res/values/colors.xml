@@ -5,4 +5,5 @@
     <color name="colorAccent">#2196f3</color>
     <color name="colorBlanco">#FFF</color>
     <color name="colorFondoApp">#E6E6E6</color>
+    <color name="color_negro">#000</color>
 </resources>

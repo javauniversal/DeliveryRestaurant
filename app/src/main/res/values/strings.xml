@@ -4,7 +4,7 @@
     <string name="title_activity_act_menu">Menu</string>
     <string name="password">Password</string>
     <string name="ingresar">Ingresar</string>
-    <string name="usuario">usuario</string>
+    <string name="usuario">Usuario</string>
     <string name="url_base">http://zonaapp.co/domidomi_master/service/</string>
 
     <string name="title_activity_act_product_add">Agregar Producto</string>
@@ -22,5 +22,13 @@
     <string name="add_producto">Seguir Agregando</string>
     <string name="realizar_pedido">Realizar Pedido</string>
     <string name="title_activity_act_imprimir">Imprimir</string>
+    <string name="title_activity_act_estado_pedido">Estado de los pedidos</string>
+    <string name="name">name</string>
+    <string name="precio">Precio</string>
+    <string name="cantidad12">Cantidad</string>
+    <string name="adiciones">Adiciones:</string>
+    <string name="realizar_pedido3">Realizar pedido</string>
+    <string name="total">Total:</string>
+    <string name="cancelar_pedido">Cancelar Pedido</string>
 
 </resources>

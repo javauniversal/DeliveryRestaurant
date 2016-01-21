@@ -1,9 +1,13 @@
 package zonaapp.co.deliveryrestaurant.Activities;
 
-import android.app.AlertDialog;
+import android.content.Context;
+import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.telephony.TelephonyManager;
 import android.util.TypedValue;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -14,27 +18,42 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.afollestad.materialdialogs.MaterialDialog;
+import com.android.volley.AuthFailureError;
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
 import com.baoyz.swipemenulistview.SwipeMenu;
+import com.baoyz.swipemenulistview.SwipeMenuCreator;
+import com.baoyz.swipemenulistview.SwipeMenuItem;
 import com.baoyz.swipemenulistview.SwipeMenuListView;
+import com.google.gson.Gson;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
+import zonaapp.co.deliveryrestaurant.Adapters.AppAdapterCarrito;
 import zonaapp.co.deliveryrestaurant.DataBase.DBHelper;
 import zonaapp.co.deliveryrestaurant.Entities.AddProductCar;
+import zonaapp.co.deliveryrestaurant.Entities.PedidoWebCabeza;
 import zonaapp.co.deliveryrestaurant.R;
+
+import static zonaapp.co.deliveryrestaurant.Entities.Login.getSedeStatic;
+import static zonaapp.co.deliveryrestaurant.Entities.Producto.getProductoStatic;
 
 
 public class ActCar extends AppCompatActivity implements View.OnClickListener{
 
-    //private AppAdapter mAdapter;
+    private AppAdapterCarrito mAdapter;
     private DBHelper mydb;
     private TextView total;
     private Button pedirService;
     private SwipeMenuListView mListView;
     private List<AddProductCar> mAppListPublico;
-    private TextView domicilioAdd;
-
-    AlertDialog dialog;
+    private PedidoWebCabeza objeto = new PedidoWebCabeza();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,42 +61,22 @@ public class ActCar extends AppCompatActivity implements View.OnClickListener{
         setContentView(R.layout.layout_car);
         mydb = new DBHelper(this);
         Toolbar toolbar = (Toolbar) findViewById(R.id.app_bar);
-        //toolbar.setTitle(getEmpresastatic().getDescripcion());
+        toolbar.setTitle(getSedeStatic().getDescripcion());
         toolbar.setNavigationIcon(R.mipmap.ic_action_cartw);
         setSupportActionBar(toolbar);
 
         total = (TextView) findViewById(R.id.totaltexto);
-        domicilioAdd = (TextView) findViewById(R.id.domicilioAdd);
         pedirService = (Button) findViewById(R.id.pedirServices);
         pedirService.setOnClickListener(this);
 
-        //dialog = new SpotsDialog(ActCar.this);
-        //dialog.show();
-
         mListView = (SwipeMenuListView) findViewById(R.id.listView);
-
-        //domicilioAdd.setText(String.format("Domicilio: $ %s", getSedeStatic().getCosenvio()));
 
         llenarData();
 
         // step 1. create a MenuCreator
-        /*SwipeMenuCreator creator = new SwipeMenuCreator() {
+        SwipeMenuCreator creator = new SwipeMenuCreator() {
             @Override
             public void create(SwipeMenu menu) {
-                // create "open" item
-                SwipeMenuItem openItem = new SwipeMenuItem(getApplicationContext());
-                // set item background
-                openItem.setBackground(new ColorDrawable(Color.rgb(0xC9, 0xC9,0xCE)));
-                // set item width
-                openItem.setWidth(dp2px(90));
-                // set item title
-                openItem.setTitle("Editar");
-                // set item title fontsize
-                openItem.setTitleSize(18);
-                // set item title font color
-                openItem.setTitleColor(Color.WHITE);
-                // add to menu
-                menu.addMenuItem(openItem);
                 // create "delete" item
                 SwipeMenuItem deleteItem = new SwipeMenuItem(getApplicationContext());
                 // set item background
@@ -89,10 +88,10 @@ public class ActCar extends AppCompatActivity implements View.OnClickListener{
                 // add to menu
                 menu.addMenuItem(deleteItem);
             }
-        };*/
+        };
 
         // set creator
-        //mListView.setMenuCreator(creator);
+        mListView.setMenuCreator(creator);
 
         // step 2. listener item click event
         mListView.setOnMenuItemClickListener(new SwipeMenuListView.OnMenuItemClickListener() {
@@ -101,10 +100,6 @@ public class ActCar extends AppCompatActivity implements View.OnClickListener{
                 //AddProductCar item = mAppList.get(position);
                 switch (index) {
                     case 0:
-                        // open
-                        break;
-                    case 1:
-                        // delete
                         createDialog(position);
                         break;
                 }
@@ -140,17 +135,16 @@ public class ActCar extends AppCompatActivity implements View.OnClickListener{
     }
 
     private void llenarData() {
-        /*List<AddProductCar> mAppList = mydb.getProductCar(getSedeStatic().getIdempresa(), getSedeStatic().getIdsedes());
-        mAdapter = new AppAdapter(ActCar.this, mAppList);
+        List<AddProductCar> mAppList = mydb.getProductCar(getSedeStatic().getIdempleado(), getSedeStatic().getIdsedes());
+        mAdapter = new AppAdapterCarrito(ActCar.this, mAppList);
         mListView.setAdapter(mAdapter);
         sumarValoresFinales(mAppList);
         mAppListPublico = mAppList;
-        dialog.dismiss();*/
     }
 
     private void sumarValoresFinales(List<AddProductCar> data){
 
-        /*if(data.size() > 0){
+        if(data.size() > 0){
             double dValor = 0;
 
             for (int i = 0; i < data.size(); i++) {
@@ -158,18 +152,12 @@ public class ActCar extends AppCompatActivity implements View.OnClickListener{
                 //dValor = dValor * data.get(i).getQuantity();
             }
 
-            dValor = dValor + getSedeStatic().getCosenvio();
-
-            if (dValor > getEmpresastatic().getValorMin()) {
-                pedirService.setVisibility(View.VISIBLE);
-            }else{
-                pedirService.setVisibility(View.GONE);
-            }
+            pedirService.setVisibility(View.VISIBLE);
 
             total.setText( "Total: $"+dValor);
         }else{
             pedirService.setVisibility(View.GONE);
-        }*/
+        }
 
     }
 
@@ -187,7 +175,7 @@ public class ActCar extends AppCompatActivity implements View.OnClickListener{
                             Toast.makeText(getApplicationContext(), "Problemas al eliminar el producto", Toast.LENGTH_SHORT).show();
                         } else {
                             mAppListPublico.remove(position);
-                            //mAdapter.notifyDataSetChanged();
+                            mAdapter.notifyDataSetChanged();
                             sumarValoresFinales(mAppListPublico);
                         }
                     }
@@ -230,9 +218,77 @@ public class ActCar extends AppCompatActivity implements View.OnClickListener{
     public void onClick(View view) {
         switch (view.getId()){
             case R.id.pedirServices:
-                /*startActivity(new Intent(ActCar.this, ActFinalizarPedido.class));
-                overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);*/
+                enviarPedido();
                 break;
         }
+    }
+
+    public void enviarPedido(){
+
+        String url = String.format("%1$s%2$s", getString(R.string.url_base),"setPedidoLocal");
+        RequestQueue rq = Volley.newRequestQueue(this);
+
+        StringRequest jsonRequest = new StringRequest(Request.Method.POST, url,
+                new Response.Listener<String>(){
+                    @Override
+                    public void onResponse(String response) {
+                        // response
+
+                        Toast.makeText(ActCar.this, response, Toast.LENGTH_LONG).show();
+
+                        if(mydb.DeleteProductAll(getSedeStatic().getIdempleado(), getSedeStatic().getIdsedes())){
+
+                            Toast.makeText(ActCar.this, response, Toast.LENGTH_LONG).show();
+
+                            startActivity(new Intent(ActCar.this, ActEstadoPedido.class));
+                            overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
+                            finish();
+
+                        }else{
+                            Toast.makeText(ActCar.this, "Problemas con el pedido.", Toast.LENGTH_LONG).show();
+                        }
+                    }
+                },
+                new Response.ErrorListener(){
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        // error
+                    }
+                }
+        ) {
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String, String> params = new HashMap<>();
+
+                TelephonyManager telephonyManager = (TelephonyManager)getSystemService(Context.TELEPHONY_SERVICE);
+
+                objeto.setImeiPhone(telephonyManager.getDeviceId());
+                objeto.setNombreUsuairo("ESTABLECIMIENTO");
+                objeto.setCelularp("ESTABLECIMIENTO");
+                objeto.setDireccionp("ESTABLECIMIENTO");
+                objeto.setDireccionReferen("ESTABLECIMIENTO");
+                objeto.setMedioPago(getProductoStatic().getMedioPagoList().get(0).getIdmediopago());
+
+                objeto.setValorPago(0.0);
+                objeto.setLatitud(Double.valueOf(0.0));
+                objeto.setLongitud(Double.valueOf(0.0));
+                objeto.setIdEmpresaP(getSedeStatic().getIdempleado());
+                objeto.setIdSedeP(getSedeStatic().getIdsedes());
+
+                List<AddProductCar> mAppList = mydb.getProductCar(getSedeStatic().getIdempleado(), getSedeStatic().getIdsedes());
+
+                for (int i = 0; i < mAppList.size(); i++) {
+                    mAppList.get(i).setAdicionesList(mydb.getAdiciones(mAppList.get(i).getIdProduct(),mAppList.get(i).getIdcompany(), mAppList.get(i).getIdsede()));
+                }
+
+                objeto.setProducto(mAppList);
+                String parJSON = new Gson().toJson(objeto, PedidoWebCabeza.class);
+
+                params.put("pedido", parJSON);
+
+                return params;
+            }
+        };
+        rq.add(jsonRequest);
     }
 }

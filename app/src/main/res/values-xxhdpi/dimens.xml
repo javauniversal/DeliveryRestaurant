@@ -1,0 +1,15 @@
+<resources>
+
+    <!-- Esta dimencion es para celulares con pantalla de
+
+        * 1080x1920 - Samsung S4, HTC one, etc
+
+
+    -->
+
+    <dimen name="ancho_tabla">130dp</dimen>
+    <dimen name="ancho_table_precio">50dp</dimen>
+
+    <dimen name="size_menu_text">4dp</dimen>
+
+</resources>

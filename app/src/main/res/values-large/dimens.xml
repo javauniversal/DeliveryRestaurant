@@ -1,0 +1,13 @@
+<resources>
+
+    <!-- Esta dimencion es para celulares con pantalla de
+
+        * (480x800)
+
+
+    -->
+
+    <dimen name="ancho_tabla">10dp</dimen>
+    <dimen name="largo_tabla">10dp</dimen>
+
+</resources>

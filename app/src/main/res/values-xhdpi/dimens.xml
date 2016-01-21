@@ -1,0 +1,17 @@
+<resources>
+
+    <!-- Esta dimencion es para celulares con pantalla de
+
+        * 4.7”   1280x720 xhdpi
+        * 4.65” 720x1280 xhdpi
+        * (720x1280 - Samsung S3, Micromax Canvas HD, etc)
+
+
+    -->
+
+
+
+    <dimen name="ancho_tabla">10dp</dimen>
+    <dimen name="ancho_table_precio">10dp</dimen>
+
+</resources>

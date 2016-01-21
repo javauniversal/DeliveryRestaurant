@@ -1,0 +1,57 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="8dp" >
+
+    <de.hdodenhof.circleimageview.CircleImageView
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/iv_icon"
+        android:layout_width="56dp"
+        android:layout_height="56dp"
+        android:src="@drawable/ic_logo"
+        app:civ_border_width="1dp"
+        app:civ_border_color="@color/colorAccent"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:orientation="vertical"
+        android:layout_marginLeft="9dp"
+        android:layout_toRightOf="@+id/iv_icon"
+        android:layout_toEndOf="@+id/iv_icon">
+
+        <TextView
+            android:id="@+id/tv_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/name"
+            android:textSize="12sp" />
+
+        <TextView
+            android:id="@+id/tv_preci"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/precio"
+            android:textSize="12sp" />
+
+        <TextView
+            android:id="@+id/tv_cantidad"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/cantidad12"
+            android:textSize="12sp" />
+
+        <TextView
+            android:id="@+id/tv_adiciones"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/adiciones"
+            android:visibility="visible"
+            android:textSize="12sp" />
+
+    </LinearLayout>
+
+
+
+</RelativeLayout>

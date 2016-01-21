@@ -9,6 +9,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.Toast;
 
+import com.afollestad.materialdialogs.MaterialDialog;
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -63,7 +64,7 @@ public class ActMenu extends AppCompatActivity {
         menuDeliveries.add(new MenuDelivery(R.drawable.ic_local_grocery_store_black_48dp, "CARRITO"));
         menuDeliveries.add(new MenuDelivery(R.drawable.ic_print_black_48dp, "IMPRIMIR"));
         menuDeliveries.add(new MenuDelivery(R.drawable.ic_settings_black_48dp, "CONFIGURACION"));
-        menuDeliveries.add(new MenuDelivery(R.drawable.ic_settings_black_48dp, "CONFIGURACION"));
+        menuDeliveries.add(new MenuDelivery(R.drawable.ic_help_outline_black_48dp, "AYUDA"));
         menuDeliveries.add(new MenuDelivery(R.drawable.ic_exit_to_app_black_48dp, "SALIR"));
 
         mAdapter = new AdapterRecyclerMenu(this, menuDeliveries);
@@ -79,10 +80,40 @@ public class ActMenu extends AppCompatActivity {
                         scanIntegrator.initiateScan();
 
                         break;
+
+                    case "SALIR":
+
+                        new MaterialDialog.Builder(ActMenu.this)
+                                .title("Cerrar la Aplicación")
+                                .content("Esta seguro de Cerrar la aplicación")
+                                .positiveText("Aceptar")
+                                .negativeText("Cancelar")
+                                .callback(new MaterialDialog.ButtonCallback() {
+                                    @Override
+                                    public void onPositive(MaterialDialog dialog) {
+                                        quit();
+                                    }
+                                    @Override
+                                    public void onNegative(MaterialDialog dialog) {
+                                        dialog.dismiss();
+                                    }
+                                }).show();
+
+                        break;
+
+                    case "CARRITO":
+                        startActivity(new Intent(ActMenu.this, ActEstadoPedido.class));
+                        overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
                 }
             }
         }));
 
+    }
+
+    public void quit() {
+        int pid = android.os.Process.myPid();
+        android.os.Process.killProcess(pid);
+        System.exit(0);
     }
 
     public void onActivityResult(int requestCode, int resultCode, Intent intent) {
@@ -142,7 +173,8 @@ public class ActMenu extends AppCompatActivity {
     private boolean parseJSON(String json) {
         boolean indicant = false;
         Gson gson = new Gson();
-        if (!json.equals("[]") || json != null){
+
+        if (!json.equals("[]")){
             try {
 
                 final Producto listProduct = gson.fromJson(json, Producto.class);
@@ -157,11 +189,18 @@ public class ActMenu extends AppCompatActivity {
                 ex.printStackTrace();
                 indicant = false;
             }
+
         }else {
             //alertDialog.dismiss();
             Toast.makeText(getApplicationContext(),"Problemas al recuperar la información", Toast.LENGTH_SHORT).show();
         }
         return indicant;
+    }
+
+    @Override
+    public void onBackPressed() {
+        finish();
+        super.onBackPressed();  // optional depending on your needs
     }
 
 }

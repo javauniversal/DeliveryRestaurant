@@ -1,0 +1,15 @@
+<resources>
+
+    <!-- Esta dimencion es para celulares con pantalla de
+
+        * 3.4” 240x432 ldpi
+        * 3.3” 240x400 ldpi
+        * 2.7” 240x320 ldpi
+
+
+    -->
+
+    <dimen name="ancho_tabla">10dp</dimen>
+    <dimen name="ancho_table_precio">10dp</dimen>
+
+</resources>
