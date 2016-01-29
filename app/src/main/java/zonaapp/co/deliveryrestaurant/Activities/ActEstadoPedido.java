@@ -18,7 +18,6 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.baoyz.swipemenulistview.SwipeMenuListView;
-import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.gson.Gson;
 
 import java.util.HashMap;
@@ -32,11 +31,6 @@ import zonaapp.co.deliveryrestaurant.R;
 public class ActEstadoPedido extends AppCompatActivity {
     private SwipeMenuListView listView;
     private AlertDialog alertDialog;
-    /**
-     * ATTENTION: This was auto-generated to implement the App Indexing API.
-     * See https://g.co/AppIndexing/AndroidStudio for more information.
-     */
-    private GoogleApiClient client;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
